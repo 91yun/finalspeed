@@ -90,12 +90,6 @@ public class ClientUI implements ClientUII, WindowListener {
 
     private SystemTray tray;
 
-    int serverVersion = -1;
-
-    int localVersion = 3;
-
-    boolean checkingUpdate = false;
-
     String domain = "";
 
     String homeUrl;
@@ -131,8 +125,6 @@ public class ClientUI implements ClientUII, WindowListener {
     public boolean isVisible = true;
 
     JRadioButton r_tcp, r_udp;
-
-    String updateUrl;
     
     boolean min=false;
     
@@ -145,7 +137,6 @@ public class ClientUI implements ClientUII, WindowListener {
     {
         domain = "ip4a.com";
         homeUrl = "http://www.ip4a.com/?client_fs";
-        updateUrl = "http://fs.d1sm.net/finalspeed/update.properties";
     }
 
     ClientUI(final boolean isVisible,boolean min) {
@@ -650,13 +641,7 @@ public class ClientUI implements ClientUII, WindowListener {
         mapClient.setMapServer(config.getServerAddress(), config.getServerPort(), config.getRemotePort(), null, null, config.isDirect_cn(), config.getProtocal().equals("tcp"),
                 null);
 
-        Route.es.execute(new Runnable() {
 
-            @Override
-            public void run() {
-                checkUpdate();
-            }
-        });
 
         setSpeed(config.getDownloadSpeed(), config.getUploadSpeed());
         if (isVisible&!min) {
@@ -1072,40 +1057,6 @@ public class ClientUI implements ClientUII, WindowListener {
         return button;
     }
 
-    boolean haveNewVersion() {
-        return serverVersion > localVersion;
-    }
-
-    public void checkUpdate() {
-        for (int i = 0; i < 3; i++) {
-            checkingUpdate = true;
-            try {
-                Properties propServer = new Properties();
-                HttpURLConnection uc = Tools.getConnection(updateUrl);
-                uc.setUseCaches(false);
-                InputStream in = uc.getInputStream();
-                propServer.load(in);
-                serverVersion = Integer.parseInt(propServer.getProperty("version"));
-                break;
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Thread.sleep(3 * 1000);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-            } finally {
-                checkingUpdate = false;
-            }
-        }
-        if (this.haveNewVersion()) {
-            int option = JOptionPane.showConfirmDialog(mainFrame, "发现新版本,立即更新吗?", "提醒", JOptionPane.WARNING_MESSAGE);
-            if (option == JOptionPane.YES_OPTION) {
-                openUrl(homeUrl);
-            }
-        }
-
-    }
 
     void initUI() {
         SwingUtilities.invokeLater(new Runnable() {

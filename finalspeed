@@ -19,6 +19,7 @@ conf=/fs/fs.conf
 logname=/fs/server.log
 
 start(){
+	cd /fs
 	ulimit -s 65535
 	ulimit -n 65535
 	tram=$( free -m | awk '/Mem/ {print $2}' )

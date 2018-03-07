@@ -52,9 +52,9 @@ function install_finalspeed(){
 	checkenv
 	mkdir -p $install_path
 	echo '' > ${install_path}"server.log"
-	wget --no-check-certificate https://raw.githubusercontent.com/91yun/finalspeed/master/fs1.2_server/fs.jar -O ${install_path}"fs.jar"
+	wget --no-check-certificate https://raw.githubusercontent.com/NIGHT-CORE/finalspeed/master/fs1.2_server/fs.jar -O ${install_path}"fs.jar"
     if [ "$OS" == 'centos' ]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/91yun/finalspeed/master/finalspeed -O /etc/init.d/finalspeed; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/NIGHT-CORE/finalspeed/master/finalspeed -O /etc/init.d/finalspeed; then
 			echo "Failed to download finalspeed chkconfig file!"
 			exit 1
 		fi
@@ -62,7 +62,7 @@ function install_finalspeed(){
 		chkconfig --add finalspeed
 		chkconfig finalspeed on	  
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/91yun/finalspeed/master/finalspeed-debian -O /etc/init.d/finalspeed; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/NIGHT-CORE/finalspeed/master/finalspeed-debian -O /etc/init.d/finalspeed; then
 			echo "Failed to download finalspeed chkconfig file!"
 			exit 1
 		fi

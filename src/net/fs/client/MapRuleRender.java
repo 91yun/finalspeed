@@ -12,7 +12,6 @@ import javax.swing.table.TableCellRenderer;
 
 
 import net.miginfocom.swing.MigLayout;
-import sun.swing.DefaultLookup;
 
 public class MapRuleRender extends JLabel implements TableCellRenderer {
 
@@ -69,14 +68,12 @@ public class MapRuleRender extends JLabel implements TableCellRenderer {
 				&& dropLocation.getRow() == row
 				&& dropLocation.getColumn() == column) {
 
-			fg = DefaultLookup.getColor(this, ui, "Table.dropCellForeground");
-			bg = DefaultLookup.getColor(this, ui, "Table.dropCellBackground");
 			isSelected = true;
 		}
 		if (isSelected) {
-			setBackground(DefaultLookup.getColor(this, ui, "Table.dropCellBackground"));
+			setBackground(new Color(176, 196, 222)); // LightSteelBlue
 		} else {
-			setBackground( DefaultLookup.getColor(this, ui, "Table.alternateRowColor"));
+			setBackground(new Color(255, 255, 255)); // White
 		}
 		MapRule rule=(MapRule)value;
 		update(rule,table,row);

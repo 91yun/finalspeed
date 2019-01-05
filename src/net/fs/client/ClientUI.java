@@ -96,9 +96,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
     boolean checkingUpdate = false;
 
-    String domain = "";
-
-    String homeUrl;
+    String googleUrl;
 
     public static ClientUI ui;
 
@@ -131,8 +129,6 @@ public class ClientUI implements ClientUII, WindowListener {
     public boolean isVisible = true;
 
     JRadioButton r_tcp, r_udp;
-
-    String updateUrl;
     
     boolean min=false;
     
@@ -143,9 +139,7 @@ public class ClientUI implements ClientUII, WindowListener {
     boolean tcpEnable=true;
 
     {
-        domain = "ip4a.com";
-        homeUrl = "http://www.ip4a.com/?client_fs";
-        updateUrl = "http://fs.d1sm.net/finalspeed/update.properties";
+        googleUrl = "https://www.google.com/";
     }
 
     ClientUI(final boolean isVisible,boolean min) {
@@ -167,7 +161,7 @@ public class ClientUI implements ClientUII, WindowListener {
         initUI();
         checkQuanxian();
         loadConfig();
-        mainFrame.setTitle("FinalSpeed 1.12测试版");
+        mainFrame.setTitle("FinalSpeed");
         mainFrame.addWindowListener(this);
         mainPanel = (JPanel) mainFrame.getContentPane();
         mainPanel.setLayout(new MigLayout("align center , insets 10 10 10 10"));
@@ -426,13 +420,13 @@ public class ClientUI implements ClientUII, WindowListener {
         JButton button_save = createButton("确定");
         p4.add(button_save);
 
-        button_site = createButton("网站");
+        button_site = createButton("Google");
         p4.add(button_site);
         button_site.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                openUrl(homeUrl);
+                openUrl(googleUrl);
             }
         });
 
@@ -654,7 +648,7 @@ public class ClientUI implements ClientUII, WindowListener {
 
             @Override
             public void run() {
-                checkUpdate();
+                
             }
         });
 
@@ -1070,41 +1064,6 @@ public class ClientUI implements ClientUII, WindowListener {
         button.setMargin(new Insets(0, 5, 0, 5));
         button.setFocusPainted(false);
         return button;
-    }
-
-    boolean haveNewVersion() {
-        return serverVersion > localVersion;
-    }
-
-    public void checkUpdate() {
-        for (int i = 0; i < 3; i++) {
-            checkingUpdate = true;
-            try {
-                Properties propServer = new Properties();
-                HttpURLConnection uc = Tools.getConnection(updateUrl);
-                uc.setUseCaches(false);
-                InputStream in = uc.getInputStream();
-                propServer.load(in);
-                serverVersion = Integer.parseInt(propServer.getProperty("version"));
-                break;
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    Thread.sleep(3 * 1000);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-            } finally {
-                checkingUpdate = false;
-            }
-        }
-        if (this.haveNewVersion()) {
-            int option = JOptionPane.showConfirmDialog(mainFrame, "发现新版本,立即更新吗?", "提醒", JOptionPane.WARNING_MESSAGE);
-            if (option == JOptionPane.YES_OPTION) {
-                openUrl(homeUrl);
-            }
-        }
-
     }
 
     void initUI() {
